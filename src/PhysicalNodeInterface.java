@@ -3,7 +3,8 @@ import java.rmi.RemoteException;
 
 public interface PhysicalNodeInterface extends Remote
 {
-    public void addNeighbour(PhysicalNodeInterface neighbour, int id) throws RemoteException;
-    public PhysicalNodeInterface getNeighbour(int id) throws RemoteException;
-    public void sendMessage(String message, int id) throws RemoteException;
+    int getID() throws RemoteException;
+    void addNeighbour(PhysicalNodeInterface neighbour, int id) throws RemoteException;
+    PhysicalNodeInterface getNeighbour(int id) throws RemoteException;
+    void sendMessage(String message, int id) throws RemoteException;
 }

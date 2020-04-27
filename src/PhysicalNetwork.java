@@ -13,18 +13,24 @@ public class PhysicalNetwork
     private int numberOfNodes;
     private ArrayList<Integer> nodeIDList;
 
-    private  ArrayList<PhysicalNode> listOfNodes;
+    private ArrayList<PhysicalNode> listOfNodes;
     private ArrayList<PhysicalNodeInterface> listOfNodesInterfaces;
 
     private HashMap<Integer, ArrayList<Integer>> nodeNeighbourMap;
 
-    public PhysicalNetwork(String inputFile)
+    public PhysicalNetwork(String inputFile) throws IOException
     {
         this.inputFile = inputFile;
         numberOfNodes = 0;
         nodeNeighbourMap = new HashMap<>();
         listOfNodes = new ArrayList<>();
         listOfNodesInterfaces = new ArrayList<>();
+        nodeIDList = new ArrayList<>();
+
+        readFile(this.inputFile);
+        createRemoteNetwork();
+        connectNeighbours();
+
     }
 
     /*  FUNC: createRemoteNetwork()
@@ -38,11 +44,13 @@ public class PhysicalNetwork
 
         for (int i= 0; i < numberOfNodes; i++)
         {
-            PhysicalNode physicalNode = new PhysicalNode();
+            PhysicalNode physicalNode = new PhysicalNode(nodeIDList.get(i));
             PhysicalNodeInterface physicalNodeInterface = (PhysicalNodeInterface) UnicastRemoteObject.exportObject(physicalNode, 0);
             listOfNodes.add(physicalNode);
             listOfNodesInterfaces.add(physicalNodeInterface);
         }
+
+        System.out.println("Physical Network created");
     }
 
 
@@ -69,9 +77,13 @@ public class PhysicalNetwork
                 listOfNodesInterfaces.get( x ).addNeighbour(listOfNodesInterfaces.get(i), nodeIDList.get(i));
             }
         }
+
+        System.out.println("Neighbours connected");
     }
 
-    /*  This function is used for extracting all information from the inputMatrix.txt file.
+    /*  FUNC: readFile()
+
+        This function is used for extracting all information from the inputMatrix.txt file.
         Information includes:
 
         - No. of nodes (1st line)
@@ -126,8 +138,13 @@ public class PhysicalNetwork
             }
             nodeNeighbourMap.put(j, neighbourList);
         }
-
+        //System.out.println("inputFile read successfully !");
         return nodeNeighbourMap;
+    }
+
+    public ArrayList<PhysicalNode> getPhysicalNodes()
+    {
+        return listOfNodes;
     }
 
 }
