@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.Scanner;
 
 import static java.lang.System.exit;
 
@@ -22,6 +23,45 @@ public class MainClass
         VirtualNetwork virtualNetwork = new VirtualNetwork(physicalNetwork.getPhysicalNodes());
 
 
+        System.out.println("Send a message from one node to another");
+        System.out.println("SYNTAX: send <VNx> <VNy> <CW / ACW> <message string>");
+
+        while(true)
+        {
+
+            Scanner messageScanner = new Scanner(System.in);
+
+            String inputString = messageScanner.nextLine();
+            Scanner scanner = new Scanner(inputString);
+            String cmd = scanner.next();
+            int senderNode = scanner.nextInt();
+            int receiverNode = scanner.nextInt();
+            if (senderNode == receiverNode)
+            {
+                System.out.println("Please send to a different node only");
+                continue;
+            }
+            String dirStr = scanner.next();
+            int direction = 0;
+            if(dirStr.equals("CW"))
+            {
+                direction = 1;
+            }
+            else if(dirStr.equals("ACW"))
+            {
+                direction = -1;
+            }
+            String message = scanner.next();
+            if(inputString.equals("-exit-"))
+            {
+                break;
+            }
+            else
+            {
+                virtualNetwork.messageDesk(senderNode, receiverNode, direction, message);
+            }
+
+        }
 
     }
 

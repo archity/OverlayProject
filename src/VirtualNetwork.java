@@ -26,7 +26,7 @@ public class VirtualNetwork
         System.out.println("Nodes:" + noOfPhyNodes + "\n");
         for (int i = 0; i < noOfPhyNodes; i++)
         {
-            // Keeping the assignment of Virtual Node ID simple 
+            // Keeping the assignment of Virtual Node ID simple
             nodeIDList.add(i);
 
             // Add (pass) the physical node to virtual node's constructor.
@@ -66,6 +66,38 @@ public class VirtualNetwork
             // Printout current VN's neighbours
             System.out.println("Virtual Node " + nodeIDList.get(i) + " has neighbours " + listOfVirtualNodeInterface.get(i).getClockNeighbour().getID() + " and " + listOfVirtualNodeInterface.get(i).getAntiClockNeighbour().getID());
         }
+    }
+
+    public void messageDesk(int senderNode, int receiverNode, int direction, String message) throws RemoteException
+    {
+        int i = senderNode;
+        while(i != receiverNode)
+        {
+            int currentNode = i;
+
+            if(direction == 1)
+            {
+                i = (i + 1) % listOfVirtualNodes.size();
+            }
+            else if (direction == -1)
+            {
+                if (i == 0)
+                {
+                    i = listOfVirtualNodes.size() - 1;
+                }
+                else
+                {
+                    i = (i - 1) % listOfVirtualNodes.size();
+                }
+            }
+
+            // Pass on the message to the specific VN, telling the message and which VN neighbour
+            // (i) to pass the message to.
+            listOfVirtualNodeInterface.get(currentNode).sendMessageTo(i, direction, message);
+        }
+
+
+
     }
 
 
