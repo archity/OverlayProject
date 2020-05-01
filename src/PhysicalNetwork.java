@@ -80,7 +80,7 @@ public class PhysicalNetwork
         }
 
         System.out.println("Neighbours connected");
-        System.out.println("LIST OF NEIGHBOURS:");
+        //System.out.println("LIST OF NEIGHBOURS:");
 
         /*
         for(int i = 0; i < listOfNodesInterfaces.size(); i++)

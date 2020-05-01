@@ -43,13 +43,16 @@ public class PhysicalNode implements PhysicalNodeInterface
 
         //------------------------------------------------------
         //----------------------DEBUGGER------------------------
-        System.out.println("Size of path: " + tracePath.size());
-        System.out.println("PATH: ");
+
+        //System.out.println("Size of path: " + tracePath.size());
+        System.out.print("PATH: ");
         for (int i = 0; i < tracePath.size(); i++)
         {
             System.out.print(tracePath.get(i) + ", ");
         }
-        System.out.println("\n");
+        System.out.print("\n");
+
+
         //------------------------------------------------------
 
         // Now that the path has been computed, send the message along this path.
@@ -62,13 +65,13 @@ public class PhysicalNode implements PhysicalNodeInterface
     {
 
 
-        System.out.println("Message currently in PN " + this.phyNodeID);
+        //System.out.println("Message currently in PN " + this.phyNodeID);
         if(path.get(path.size() - 1) == this.phyNodeID)
         {
             System.out.println("-----------------------");
             //The message has reached the Physical node
-            System.out.println("MESSAGE RECEIVED !");
-            System.out.println("Message: " + message);
+            //System.out.println("MESSAGE RECEIVED !");
+            //System.out.println("Message: " + message);
             return;
         }
         path.remove((Integer) this.phyNodeID);
@@ -89,6 +92,7 @@ public class PhysicalNode implements PhysicalNodeInterface
     {
         //------------------------------------------------------
         //----------------------DEBUGGER------------------------
+        /*
         System.out.println("in PN : " + this.phyNodeID);
         System.out.println("Neighbours:");
         for(int i = 0; i < this.listOfNeighbours.size(); i++)
@@ -103,6 +107,8 @@ public class PhysicalNode implements PhysicalNodeInterface
             System.out.print(path.get(i) + ", ");
         }
         System.out.println("\n");
+
+         */
         //------------------------------------------------------
 
 
@@ -123,9 +129,10 @@ public class PhysicalNode implements PhysicalNodeInterface
         // except the one which called it
         if(this.phyNodeID != destinationPhyNode && this.listOfNeighbours.size() == 1 && fatherID != -1)
         {
-            System.out.println("I'm about to remove: " + this.phyNodeID);
+            //System.out.println("I'm about to remove: " + this.phyNodeID);
             path.remove((Integer) this.phyNodeID);
 
+            /*
             System.out.println("Current path: ");
             for(int i = 0; i < path.size(); i++)
             {
@@ -133,6 +140,7 @@ public class PhysicalNode implements PhysicalNodeInterface
             }
             System.out.println("\n");
 
+             */
 
             return path;
         }

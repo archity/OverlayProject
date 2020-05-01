@@ -16,6 +16,7 @@ public class MainClass
         }
         inputFile = args[0];
 
+        System.out.println("------------------------------------------------");
         // Initialize the physical network
         PhysicalNetwork physicalNetwork = new PhysicalNetwork(inputFile);
 
@@ -23,11 +24,10 @@ public class MainClass
         VirtualNetwork virtualNetwork = new VirtualNetwork(physicalNetwork.getPhysicalNodes());
 
 
-        System.out.println("Send a message from one node to another");
-        System.out.println("SYNTAX: send <VNx> <VNy> <CW / ACW> <message string>");
-
         while(true)
         {
+            System.out.println("Send a message from one node to another");
+            System.out.println("SYNTAX: send <VNx> <VNy> <CW / ACW> <message string>");
 
             Scanner messageScanner = new Scanner(System.in);
 
@@ -51,14 +51,24 @@ public class MainClass
             {
                 direction = -1;
             }
+
+            else
+            {
+                System.out.println("Please specify the direction as CW or ACW.");
+                continue;
+            }
+
             String message = scanner.next();
-            if(inputString.equals("-exit-"))
+            if(inputString.equals("exit"))
             {
                 break;
             }
             else
             {
+                System.out.println("------------------------------------------------");
                 virtualNetwork.messageDesk(senderNode, receiverNode, direction, message);
+                System.out.println("------------------------------------------------");
+                System.out.println("\n\n\n\n");
             }
 
         }

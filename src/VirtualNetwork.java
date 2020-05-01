@@ -40,13 +40,14 @@ public class VirtualNetwork
             System.out.println("Virtual Node " + nodeIDList.get(i) + " connected with physical node " + listOfPhysicalNodes.get(i).getID());
 
         }
+        System.out.println("\n");
 
     }
 
     public void connectNeighbours()
     {
         int size = listOfVirtualNodes.size();
-        System.out.println("SIZE: " + size);
+        //System.out.println("SIZE: " + size);
 
         for(int i = 0; i < size; i++)
         {
@@ -66,14 +67,22 @@ public class VirtualNetwork
             // Printout current VN's neighbours
             System.out.println("Virtual Node " + nodeIDList.get(i) + " has neighbours " + listOfVirtualNodeInterface.get(i).getClockNeighbour().getID() + " and " + listOfVirtualNodeInterface.get(i).getAntiClockNeighbour().getID());
         }
+        System.out.println("\n");
     }
 
     public void messageDesk(int senderNode, int receiverNode, int direction, String message) throws RemoteException
     {
         int i = senderNode;
-        while(i != receiverNode)
+        while(true)
         {
             int currentNode = i;
+
+            if(i == receiverNode)
+            {
+                listOfVirtualNodeInterface.get(currentNode).sendMessageTo(i, -1, "Message reached successfully VN ");
+                break;
+            }
+
 
             if(direction == 1)
             {
