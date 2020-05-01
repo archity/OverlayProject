@@ -58,6 +58,7 @@ public class VirtualNode implements VirtualNodeInterface
     @Override
     public void sendMessageTo(int receiverNodeID, int direction, String message) throws RemoteException
     {
+        System.out.println("ReceiverID: " + receiverNodeID);
         System.out.println("Message currently in Virtual Node " + nodeID);
         if(receiverNodeID == nodeID)    // Reached the intended VN
         {

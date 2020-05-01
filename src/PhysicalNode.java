@@ -28,9 +28,9 @@ public class PhysicalNode implements PhysicalNodeInterface
     }
 
     @Override
-    public PhysicalNodeInterface getNeighbour(int id) throws RemoteException
+    public ArrayList<PhysicalNodeInterface> getNeighbour() throws RemoteException
     {
-        return null;
+        return listOfNeighbours;
     }
 
     @Override
@@ -38,23 +38,129 @@ public class PhysicalNode implements PhysicalNodeInterface
     {
         System.out.println("Message transferred to Physical Node " + this.phyNodeID);
         ArrayList<Integer> tracePath = new ArrayList<>();
-        tracePath = computeRouting(destinationPhyNode, tracePath);
+        ArrayList<Integer> visitedNodes = new ArrayList<>();
+        tracePath = computeRouting(destinationPhyNode, tracePath, -1, visitedNodes);
+
+        //------------------------------------------------------
+        //----------------------DEBUGGER------------------------
         System.out.println("Size of path: " + tracePath.size());
+        System.out.println("PATH: ");
+        for (int i = 0; i < tracePath.size(); i++)
+        {
+            System.out.print(tracePath.get(i) + ", ");
+        }
+        System.out.println("\n");
+        //------------------------------------------------------
+
+        // Now that the path has been computed, send the message along this path.
+        sendMessagesToNode(message, tracePath);
+
     }
 
     @Override
-    public ArrayList<Integer> computeRouting(int destinationPhyNode, ArrayList<Integer> path) throws RemoteException
+    public void sendMessagesToNode(String message, ArrayList<Integer> path) throws RemoteException
     {
 
+
+        System.out.println("Message currently in PN " + this.phyNodeID);
+        if(path.get(path.size() - 1) == this.phyNodeID)
+        {
+            System.out.println("-----------------------");
+            //The message has reached the Physical node
+            System.out.println("MESSAGE RECEIVED !");
+            System.out.println("Message: " + message);
+            return;
+        }
+        path.remove((Integer) this.phyNodeID);
+        int neighbourToSendTo = path.get(0);
+
+        for (int i = 0; i < listOfNeighbours.size(); i++)
+        {
+            if(listOfNeighbours.get(i).getID() == neighbourToSendTo)
+            {
+                this.listOfNeighbours.get(i).sendMessagesToNode(message, path);
+            }
+        }
+
+    }
+
+    @Override
+    public ArrayList<Integer> computeRouting(int destinationPhyNode, ArrayList<Integer> path, int fatherID, ArrayList<Integer> visitedNodes) throws RemoteException
+    {
+        //------------------------------------------------------
+        //----------------------DEBUGGER------------------------
+        System.out.println("in PN : " + this.phyNodeID);
+        System.out.println("Neighbours:");
+        for(int i = 0; i < this.listOfNeighbours.size(); i++)
+        {
+            System.out.print(this.listOfNeighbours.get(i).getID() + ", ");
+
+        }
+        System.out.println("\n");
+        System.out.println("Current path: ");
+        for(int i = 0; i < path.size(); i++)
+        {
+            System.out.print(path.get(i) + ", ");
+        }
+        System.out.println("\n");
+        //------------------------------------------------------
+
+
+        // Add the current node to the path list.
         path.add(this.phyNodeID);
+
         if(this.phyNodeID == destinationPhyNode)
         {
             return path;
         }
 
-        for(int i = 0; i < listOfNeighbours.size(); i++)
+
+
+        visitedNodes.add(this.phyNodeID);
+
+
+        // If still hasn't reached the destination AND the node doesn't have any neighbour
+        // except the one which called it
+        if(this.phyNodeID != destinationPhyNode && this.listOfNeighbours.size() == 1 && fatherID != -1)
         {
-            return listOfNeighbours.get(i).computeRouting(destinationPhyNode, path);
+            System.out.println("I'm about to remove: " + this.phyNodeID);
+            path.remove((Integer) this.phyNodeID);
+
+            System.out.println("Current path: ");
+            for(int i = 0; i < path.size(); i++)
+            {
+                System.out.print(path.get(i) + ", ");
+            }
+            System.out.println("\n");
+
+
+            return path;
+        }
+
+        // The ID of current Physical Node  is stored so as to not check it with the
+        // next recursive call (else it leads to infinite loop)
+        int fatherNode = this.phyNodeID;
+
+
+        for(int i = 0; i < this.listOfNeighbours.size(); i++)
+        {
+
+            if(fatherID == this.listOfNeighbours.get(i).getID())
+            {
+                // you have reached the parent node which had itself called the current
+                // node, so skip this parent (father) node, else there would be
+                // infinite loop :)
+                continue;
+            }
+            if(visitedNodes.contains(this.listOfNeighbours.get(i).getID()))
+            {
+                continue;
+            }
+            path = this.listOfNeighbours.get(i).computeRouting(destinationPhyNode, path, fatherNode, visitedNodes);
+            if(path.contains(destinationPhyNode))
+            {
+                break;
+            }
         }
 
         return path;
