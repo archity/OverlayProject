@@ -61,7 +61,8 @@ public class PhysicalNetwork
         an instance of the stub of the node to the other node that is supposed to be connected to.
         The function connectNeighbours() takes care of this.
      */
-    void connectNeighbours() throws RemoteException {
+    void connectNeighbours() throws RemoteException
+    {
         for(int i = 0; i < numberOfNodes; i++)
         {
             // First get the number of neighbours of ith node
@@ -79,6 +80,21 @@ public class PhysicalNetwork
         }
 
         System.out.println("Neighbours connected");
+        System.out.println("LIST OF NEIGHBOURS:");
+
+        /*
+        for(int i = 0; i < listOfNodesInterfaces.size(); i++)
+        {
+            for(int j = 0; j < listOfNodesInterfaces.get(i).getNeighbour().size(); j++)
+            {
+                System.out.print(listOfNodesInterfaces.get(i).getNeighbour().get(j).getID());
+            }
+
+            System.out.println("\n");
+        }
+        */
+
+
     }
 
     /*  FUNC: readFile()
@@ -121,9 +137,10 @@ public class PhysicalNetwork
         }
         getLine = bufferedReader.readLine();
 
-        ArrayList<Integer> neighbourList = new ArrayList<>();
+        //ArrayList<Integer> neighbourList = new ArrayList<>();
         for (int j = 0; j < numberOfNodes; j++)
         {
+            ArrayList<Integer> neighbourList = new ArrayList<>();
             getLine = bufferedReader.readLine();
             i = 0;
 
@@ -137,8 +154,20 @@ public class PhysicalNetwork
                 i++;
             }
             nodeNeighbourMap.put(j, neighbourList);
+            //neighbourList.clear();
         }
         //System.out.println("inputFile read successfully !");
+
+        /*
+        for(int k = 0; k< nodeNeighbourMap.size(); k++)
+        {
+            for(int l = 0; l < nodeNeighbourMap.get(k).size(); l++)
+            {
+                System.out.print(nodeNeighbourMap.get(k).get(l));
+            }
+            System.out.println("\n");
+        }
+         */
         return nodeNeighbourMap;
     }
 
