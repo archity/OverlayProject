@@ -1,0 +1,11 @@
+#!/bin/bash
+
+
+# Compile all the java files to produce .class files
+javac ./src/MainClass.java ./src/PhysicalNetwork.java ./src/PhysicalNode.java ./src/PhysicalNodeInterface.java ./src/VirtualNetwork.java ./src/VirtualNode.java ./src/VirtualNodeInterface.java
+
+# Move all the prodiced .class files to /out/production/
+mv ./src/*.class ./out/production/OverlayProject
+
+# Run the MainClass java file with input as inputMatrix.txt
+java -cp ./out/production/OverlayProject MainClass inputMatrix.txt
