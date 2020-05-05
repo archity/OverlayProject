@@ -70,6 +70,14 @@ public class VirtualNetwork
         System.out.println("\n");
     }
 
+
+    /*
+
+    FUNC: messageDesk(...)
+    This function is responsible for forwarding the message from one VN to other VN, untill the message
+    has reached the intended VN.
+
+     */
     public void messageDesk(int senderNode, int receiverNode, int direction, String message) throws RemoteException
     {
         int i = senderNode;

@@ -40,7 +40,6 @@ public class PhysicalNetwork
     */
     void createRemoteNetwork() throws RemoteException
     {
-        //PhysicalNetwork physicalNetwork = new PhysicalNetwork("fd");
 
         for (int i= 0; i < numberOfNodes; i++)
         {
@@ -80,20 +79,6 @@ public class PhysicalNetwork
         }
 
         System.out.println("Neighbours connected");
-        //System.out.println("LIST OF NEIGHBOURS:");
-
-        /*
-        for(int i = 0; i < listOfNodesInterfaces.size(); i++)
-        {
-            for(int j = 0; j < listOfNodesInterfaces.get(i).getNeighbour().size(); j++)
-            {
-                System.out.print(listOfNodesInterfaces.get(i).getNeighbour().get(j).getID());
-            }
-
-            System.out.println("\n");
-        }
-        */
-
 
     }
 
@@ -108,7 +93,7 @@ public class PhysicalNetwork
      */
     public HashMap<Integer, ArrayList<Integer>> readFile(String fileName) throws IOException
     {
-        ArrayList<String> graphNetworkInfo = new ArrayList<>();
+
         FileReader fileReader = null;
         File f = new File(fileName);
 
@@ -127,7 +112,9 @@ public class PhysicalNetwork
         getLine = bufferedReader.readLine();
         numberOfNodes = Integer.parseInt(getLine);
 
+        // Skip over the 1st empty line
         getLine = bufferedReader.readLine();
+
         getLine = bufferedReader.readLine();
         int i = 0;
         while (i < numberOfNodes)
@@ -135,9 +122,10 @@ public class PhysicalNetwork
             nodeIDList.add(Integer.parseInt(String.valueOf(getLine.charAt(i))));
             i++;
         }
+
+        // Skip over the 2nd empty line
         getLine = bufferedReader.readLine();
 
-        //ArrayList<Integer> neighbourList = new ArrayList<>();
         for (int j = 0; j < numberOfNodes; j++)
         {
             ArrayList<Integer> neighbourList = new ArrayList<>();
@@ -148,26 +136,16 @@ public class PhysicalNetwork
             {
                 if(Integer.parseInt(String.valueOf(getLine.charAt(i))) == 1)
                 {
-                    //It means ith element is the neighbour of jth node.
+                    //Condition being true means ith element is the neighbour of jth node.
                     neighbourList.add(i);
                 }
                 i++;
             }
             nodeNeighbourMap.put(j, neighbourList);
-            //neighbourList.clear();
+
         }
         //System.out.println("inputFile read successfully !");
 
-        /*
-        for(int k = 0; k< nodeNeighbourMap.size(); k++)
-        {
-            for(int l = 0; l < nodeNeighbourMap.get(k).size(); l++)
-            {
-                System.out.print(nodeNeighbourMap.get(k).get(l));
-            }
-            System.out.println("\n");
-        }
-         */
         return nodeNeighbourMap;
     }
 

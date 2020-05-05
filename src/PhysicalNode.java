@@ -27,11 +27,6 @@ public class PhysicalNode implements PhysicalNodeInterface
         listOfNeighbours.add(neighbour);
     }
 
-    @Override
-    public ArrayList<PhysicalNodeInterface> getNeighbour() throws RemoteException
-    {
-        return listOfNeighbours;
-    }
 
     @Override
     public void sendMessage(String message, int destinationPhyNode) throws RemoteException
@@ -41,8 +36,6 @@ public class PhysicalNode implements PhysicalNodeInterface
         ArrayList<Integer> visitedNodes = new ArrayList<>();
         tracePath = computeRouting(destinationPhyNode, tracePath, -1, visitedNodes);
 
-        //------------------------------------------------------
-        //----------------------DEBUGGER------------------------
 
         //System.out.println("Size of path: " + tracePath.size());
         System.out.print("PATH: ");
@@ -51,7 +44,6 @@ public class PhysicalNode implements PhysicalNodeInterface
             System.out.print(tracePath.get(i) + ", ");
         }
         System.out.print("\n");
-
 
         //------------------------------------------------------
 
@@ -63,15 +55,11 @@ public class PhysicalNode implements PhysicalNodeInterface
     @Override
     public void sendMessagesToNode(String message, ArrayList<Integer> path) throws RemoteException
     {
-
-
         //System.out.println("Message currently in PN " + this.phyNodeID);
         if(path.get(path.size() - 1) == this.phyNodeID)
         {
             System.out.println("-----------------------");
-            //The message has reached the Physical node
-            //System.out.println("MESSAGE RECEIVED !");
-            //System.out.println("Message: " + message);
+            // The message has reached the Physical node
             return;
         }
         path.remove((Integer) this.phyNodeID);
@@ -90,27 +78,6 @@ public class PhysicalNode implements PhysicalNodeInterface
     @Override
     public ArrayList<Integer> computeRouting(int destinationPhyNode, ArrayList<Integer> path, int fatherID, ArrayList<Integer> visitedNodes) throws RemoteException
     {
-        //------------------------------------------------------
-        //----------------------DEBUGGER------------------------
-        /*
-        System.out.println("in PN : " + this.phyNodeID);
-        System.out.println("Neighbours:");
-        for(int i = 0; i < this.listOfNeighbours.size(); i++)
-        {
-            System.out.print(this.listOfNeighbours.get(i).getID() + ", ");
-
-        }
-        System.out.println("\n");
-        System.out.println("Current path: ");
-        for(int i = 0; i < path.size(); i++)
-        {
-            System.out.print(path.get(i) + ", ");
-        }
-        System.out.println("\n");
-
-         */
-        //------------------------------------------------------
-
 
         // Add the current node to the path list.
         path.add(this.phyNodeID);
@@ -121,7 +88,6 @@ public class PhysicalNode implements PhysicalNodeInterface
         }
 
 
-
         visitedNodes.add(this.phyNodeID);
 
 
@@ -129,19 +95,7 @@ public class PhysicalNode implements PhysicalNodeInterface
         // except the one which called it
         if(this.phyNodeID != destinationPhyNode && this.listOfNeighbours.size() == 1 && fatherID != -1)
         {
-            //System.out.println("I'm about to remove: " + this.phyNodeID);
             path.remove((Integer) this.phyNodeID);
-
-            /*
-            System.out.println("Current path: ");
-            for(int i = 0; i < path.size(); i++)
-            {
-                System.out.print(path.get(i) + ", ");
-            }
-            System.out.println("\n");
-
-             */
-
             return path;
         }
 
@@ -174,4 +128,5 @@ public class PhysicalNode implements PhysicalNodeInterface
         return path;
 
     }
+
 }

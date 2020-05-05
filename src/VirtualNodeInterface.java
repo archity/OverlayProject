@@ -7,8 +7,8 @@ public interface VirtualNodeInterface extends Remote
     VirtualNodeInterface getClockNeighbour();
     VirtualNodeInterface getAntiClockNeighbour();
     int getID();
-    void sendClockwise(String message);
-    void sendAnticlockwise(String message);
+
+    // Send message to VN having ID as receiverNodeID
     void sendMessageTo(int receiverNodeID, int direction, String message) throws RemoteException;
 
 }

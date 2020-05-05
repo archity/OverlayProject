@@ -3,7 +3,6 @@ import java.rmi.RemoteException;
 public class VirtualNode implements VirtualNodeInterface
 {
     private PhysicalNode physicalNode;
-
     private VirtualNodeInterface clockNeighbour;
     private VirtualNodeInterface antiClockNeighbour;
     private int nodeID;
@@ -14,7 +13,6 @@ public class VirtualNode implements VirtualNodeInterface
         this.clockNeighbour = null;
         this.antiClockNeighbour = null;
         this.nodeID = nodeID;
-
     }
 
 
@@ -44,18 +42,6 @@ public class VirtualNode implements VirtualNodeInterface
     }
 
     @Override
-    public void sendClockwise(String message)
-    {
-
-    }
-
-    @Override
-    public void sendAnticlockwise(String message)
-    {
-
-    }
-
-    @Override
     public void sendMessageTo(int receiverNodeID, int direction, String message) throws RemoteException
     {
         if(receiverNodeID == nodeID)    // Reached the intended VN
@@ -72,8 +58,6 @@ public class VirtualNode implements VirtualNodeInterface
 
         }
 
-
     }
-
 
 }
